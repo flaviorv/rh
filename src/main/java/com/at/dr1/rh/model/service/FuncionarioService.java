@@ -55,12 +55,12 @@ public class FuncionarioService {
         return funcionarioRepository.save(f.get());
     }
 
-    public Departamento buscarDepartamento(int funcionarioId) throws Exception {
+    public Departamento buscarDepartamento(int funcionarioId)  {
         Optional<Funcionario> f = buscarPorId(funcionarioId);
         if(f.get().getDepartamento() != null){
             return funcionarioRepository.buscarDepartamento(f.get().getDepartamento().getId());
         }
-        throw new Exception("Funcionário não pertence a nenhum departamento.");
+        throw new EntityNotFoundException("Funcionário não pertence a nenhum departamento.");
 
     }
 

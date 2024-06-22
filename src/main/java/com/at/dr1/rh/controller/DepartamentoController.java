@@ -3,6 +3,7 @@ package com.at.dr1.rh.controller;
 import com.at.dr1.rh.model.domain.Departamento;
 import com.at.dr1.rh.model.domain.Funcionario;
 import com.at.dr1.rh.model.service.DepartamentoService;
+import com.at.dr1.rh.payload.Mensagem;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,8 @@ public class DepartamentoController {
             List<Funcionario> funcList = departamentoService.buscarFuncionarios(departamentoId);
             return ResponseEntity.status(HttpStatus.OK).body(funcList);
         }catch (EntityNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Object msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
         }
     }
 
@@ -35,7 +37,8 @@ public class DepartamentoController {
             List<Departamento> departamentos = departamentoService.listarTodos();
             return ResponseEntity.status(HttpStatus.OK).body(departamentos);
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            Object msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(msg);
         }
     }
 
@@ -45,7 +48,8 @@ public class DepartamentoController {
             Optional<Departamento> departamento = departamentoService.buscarPorId(id);
             return ResponseEntity.status(HttpStatus.OK).body(departamento);
         }catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Object msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
         }
     }
 
@@ -55,7 +59,8 @@ public class DepartamentoController {
             departamentoService.regisrtrar(departamento);
             return ResponseEntity.status(HttpStatus.CREATED).body(departamento);
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            Object msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(msg);
         }
     }
 
@@ -65,17 +70,20 @@ public class DepartamentoController {
             departamentoService.atualizar(id, departamento);
             return ResponseEntity.status(HttpStatus.OK).body(departamento);
         }catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Object msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remover(@PathVariable int id) {
+        Object msg;
         try{
-            String exclusao = departamentoService.remover(id);
-            return ResponseEntity.status(HttpStatus.OK).body(exclusao);
+            msg = new Mensagem(departamentoService.remover(id));
+            return ResponseEntity.status(HttpStatus.OK).body(msg);
         }catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
         }
     }
 

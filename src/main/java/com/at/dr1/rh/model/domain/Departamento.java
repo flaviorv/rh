@@ -15,6 +15,7 @@ public class Departamento {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(nullable = false, unique = true)
     private String nome;
     private String local;
     @JsonIgnore

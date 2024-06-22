@@ -3,7 +3,6 @@ package com.at.dr1.rh.model.service;
 import com.at.dr1.rh.model.domain.Departamento;
 import com.at.dr1.rh.model.domain.Funcionario;
 import com.at.dr1.rh.model.repository.DepartamentoRepository;
-import com.at.dr1.rh.model.repository.FuncionarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,6 +52,15 @@ public class DepartamentoService {
             return "Departamento removido com sucesso";
         }else{
             throw new EntityNotFoundException("Departamento não encontrado para exclusão");
+        }
+    }
+
+    public Departamento buscarPorNome(String nome){
+        Optional<Departamento> d = departamentoRepository.porNome(nome);
+        if(d.isPresent()){
+            return d.get();
+        }else{
+            throw new EntityNotFoundException("Departamento com nome "+nome+" não encontrado");
         }
     }
 

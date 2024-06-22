@@ -4,6 +4,7 @@ import com.at.dr1.rh.model.domain.Departamento;
 import com.at.dr1.rh.model.domain.Funcionario;
 import com.at.dr1.rh.model.service.DepartamentoService;
 import com.at.dr1.rh.model.service.FuncionarioService;
+import com.at.dr1.rh.payload.Mensagem;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,8 @@ public class FuncionarioController {
             List<Funcionario> funcionarios = funcionarioService.listarTodos();
             return ResponseEntity.status(HttpStatus.OK).body(funcionarios);
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            Object msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(msg);
         }
     }
 
@@ -37,7 +39,8 @@ public class FuncionarioController {
             Optional<Funcionario> funcionario = funcionarioService.buscarPorId(id);
             return ResponseEntity.status(HttpStatus.OK).body(funcionario);
         }catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Object msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
         }
     }
 
@@ -46,8 +49,9 @@ public class FuncionarioController {
         try {
             Departamento d = funcionarioService.buscarDepartamento(idFuncionario);
             return ResponseEntity.status(HttpStatus.OK).body(d);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (EntityNotFoundException e) {
+            Object msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
         }
     }
 
@@ -57,7 +61,8 @@ public class FuncionarioController {
             funcionarioService.regisrtrar(funcionario);
             return ResponseEntity.status(HttpStatus.CREATED).body(funcionario);
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            Object msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(msg);
         }
     }
 
@@ -67,7 +72,8 @@ public class FuncionarioController {
             Funcionario f = funcionarioService.inserirDepartamento(funcionarioId, departamento.getId());
             return ResponseEntity.status(HttpStatus.OK).body(f);
         }catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Object msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
         }
     }
 
@@ -77,17 +83,20 @@ public class FuncionarioController {
             funcionarioService.atualizar(id, funcionario);
             return ResponseEntity.status(HttpStatus.OK).body(funcionario);
         }catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Object msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remover(@PathVariable int id) {
+        Object msg;
         try{
-            String exclusao = funcionarioService.remover(id);
-            return ResponseEntity.status(HttpStatus.OK).body(exclusao);
+            msg = new Mensagem(funcionarioService.remover(id));
+            return ResponseEntity.status(HttpStatus.OK).body(msg);
         }catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            msg = new Mensagem(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
         }
     }
 
