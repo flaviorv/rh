@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/departamento")
+@RequestMapping("/api/public/departamento")
 public class DepartamentoController {
 
     private final DepartamentoService departamentoService;

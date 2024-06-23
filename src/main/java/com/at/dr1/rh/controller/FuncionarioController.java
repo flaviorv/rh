@@ -16,11 +16,10 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/funcionario")
+@RequestMapping("/api/public/funcionario")
 public class FuncionarioController {
 
     private final FuncionarioService funcionarioService;
-    private final DepartamentoService departamentoService;
 
     @GetMapping
     public ResponseEntity<?> listarTodos() {
